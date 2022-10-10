@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from '../page/home/Home';
-import NotFound from '../page/not-found/NotFound';
+import Home from '../pages/home/Home';
+import NotFound from '../pages/not-found/NotFound';
 
-function appRoutes() {
+function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    // <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/*" element={<NotFound />} />
+    </Routes>
+    // </BrowserRouter>
   );
 }
 
-export default appRoutes;
+export default AppRoutes;
