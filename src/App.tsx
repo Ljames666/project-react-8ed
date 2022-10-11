@@ -1,11 +1,10 @@
 import React from 'react';
+import Home from './pages/home/Home';
 
-import X from './routes/Routes';
-
-function App() {
+function App(): JSX.Element {
   return (
     <div>
-      <X />
+      <Home />
     </div>
   );
 }
