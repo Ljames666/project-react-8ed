@@ -1,67 +1,53 @@
-import { useState } from 'react';
-import { Link, Navigate, NavLink, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import MyCard from './components/card/MyCard';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import BasicModal from './components/modal/Modal';
 
-const HomeStyle = styled.div`
-  background-color: black;
-  color: white;
-  width: 100%;
-  height: 100%;
-  h1:hover {
-    color: red;
-  }
-  p {
-    font-size: 20px;
-  }
-`;
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
 
-function Home() {
-  const [theme, setTheme] = useState<string>('light');
-  const navigate = useNavigate();
-  const handleClick = () => {
-    theme === 'light' ? setTheme('dark') : setTheme('light');
-  };
-  const handleClick404 = () => {
-    alert('executou uma função! quer ir pra 404');
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
 
-    navigate('/gfgfgf');
-  };
-
-  return (
-    <HomeStyle>
-      <h1>titulo</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet explicabo distinctio facilis
-        laboriosam corrupti veritatis quaerat similique hic aut, harum, repudiandae error
-        consectetur saepe est dolore repellat officia fugiat. Sunt.
-      </p>
-      <div>
-        <MyCard
-          header={
-            <img
-              src="https://th.bing.com/th/id/R.d0af5a2ad304527b88df0a8d996ff1f7?rik=F17v%2fr95aR8Hgw&pid=ImgRaw&r=0"
-              alt="react"
-            />
-          }
-          content={
-            <>
-              <h3>My Card com image</h3>
-              <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod illo modi commodi sed
-                similique quisquam perferendis, repellat magni id exercitationem adipisci et
-                obcaecati laborum labore unde facere neque ducimus? Ut!
-              </p>
-            </>
-          }
-          footer={<button disabled>IR</button>}
-        />
-      </div>
-      <button onClick={handleClick404}>ih foi pra 404</button>
-      <button onClick={handleClick}>trocar tema</button>
-      <NavLink to="/nout">404</NavLink>
-    </HomeStyle>
-  );
+function Home(): JSX.Element {
+    return (
+        <>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
+                            <StyledTableCell align="right">Calories</StyledTableCell>
+                            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
+                            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
+                            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody></TableBody>
+                </Table>
+            </TableContainer>
+            <BasicModal />
+        </>
+    );
 }
-
 export default Home;
