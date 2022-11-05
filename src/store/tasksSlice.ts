@@ -1,17 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export type Task = {
+    id: string;
+    title: string;
+    description: string;
+    date: Date;
+    uid: string;
+};
+
 export type TaskState = {
-    loading: boolean;
-    taskList: Array<{
-        id: string;
-        title: string;
-        description: string;
-        date: Date;
-    }>;
+    taskList: Array<Task>;
 };
 
 const initialState: TaskState = {
-    loading: false,
     taskList: [],
 };
 
@@ -24,12 +25,9 @@ const taskSlice = createSlice({
             // setTask({ id; 'éoid', title: 'hoje', description:'lalalalalalal', date:'2021-10-31'})
             state.taskList = [...state.taskList, action.payload];
         },
-        setLoading: (state, action) => {
-            state.loading = action.payload;
-        },
     },
     extraReducers: {},
 });
 
-export const { clearState, setTask } = taskSLice.actions;
+export const { clearState, setTask } = taskSlice.actions;
 export default taskSlice.reducer;
