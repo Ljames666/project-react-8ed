@@ -1,14 +1,18 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import task from './tasksSlice';
+import config from './configSlice';
+import user from './userSlice';
 
-const createReducer = (asyncReducers) => (state, action) => {
-    const combineReducer = combineReducers({
-        task,
-
-        ...asyncReducers,
-    });
-
-    return combineReducer(state, action);
+const reducer = {
+    config,
+    user,
+    task,
 };
 
-export default createReducer;
+const combineReducer = combineReducers({
+    ...reducer,
+});
+
+export type StateApp = ReturnType<typeof combineReducer>;
+
+export default combineReducer;

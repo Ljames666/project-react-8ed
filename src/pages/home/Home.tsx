@@ -1,52 +1,68 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import BasicModal from './components/modal/Modal';
+import { Box, Typography, Button } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
+import { StateApp } from '../../store/rootReducer';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
+import ModalInput from './components/modal-input-task/ModalInputTask';
+import ListTask from './components/list-task/ListsTask';
+import { setShowModal } from '../../store/tasksSlice';
+import { setUserLogon } from '../../store/userSlice';
+import { useNavigate } from 'react-router-dom';
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
+const MyHome = styled(Box)(({ theme }) => ({
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: 'black',
+    color: '#0079c6',
+    textShadow: `1px 1px 2px #fff`,
+    padding: 5,
 }));
 
 function Home(): JSX.Element {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { userLogon } = useSelector((state: StateApp) => state.user);
+    const { showModal, taskList } = useSelector((state: StateApp) => state.task);
+
+    const handleClick = () => dispatch(setShowModal({ open: true, type: 'New Task' }));
+    const handleExit = () => {
+        dispatch(setUserLogon(null));
+        setTimeout(() => {
+            navigate('/');
+        }, 1000);
+    };
+
     return (
         <>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                            <StyledTableCell align="right">Calories</StyledTableCell>
-                            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody></TableBody>
-                </Table>
-            </TableContainer>
-            <BasicModal />
+            <MyHome>
+                <Box>
+                    <Typography variant="h3">
+                        Welcome to your TaskList {userLogon?.username}
+                    </Typography>
+                </Box>
+                <Box sx={{ margin: '10px 0', display: 'flex', justifyContent: 'space-between' }}>
+                    <Button onClick={handleClick} variant="contained" color="warning">
+                        New Task
+                    </Button>
+                    <Button onClick={handleExit} variant="contained" color="error">
+                        Logout
+                    </Button>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    {taskList.length ? (
+                        <ListTask data={taskList} />
+                    ) : (
+                        <Typography variant="h4">Create your first task</Typography>
+                    )}
+                </Box>
+            </MyHome>
+            <ModalInput open={showModal.open} />
         </>
     );
 }
