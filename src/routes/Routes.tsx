@@ -3,16 +3,17 @@ import { BrowserRouter } from 'react-router-dom';
 import HomeConfig from '../pages/home/HomeConfig';
 import LoginConfig from '../pages/login/LoginConfig';
 import CadastroConfig from '../pages/cadastro/CadastroConfig';
-import Intro from '../pages/login/components/intro/Intro';
+import IntroConfig from '../pages/intro/IntroConfig';
+
+const routes = [IntroConfig, LoginConfig, CadastroConfig, HomeConfig];
 
 export default function RoutesApp() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Intro />} />
-                <Route path={LoginConfig.path} element={LoginConfig.element} />
-                <Route path={HomeConfig.path} element={HomeConfig.element} />
-                <Route path={CadastroConfig.path} element={CadastroConfig.element} />
+                {[...routes].map((item, index) => (
+                    <Route key={index} path={item.path} element={item.element} />
+                ))}
             </Routes>
         </BrowserRouter>
     );

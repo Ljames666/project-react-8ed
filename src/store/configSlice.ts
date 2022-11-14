@@ -9,6 +9,7 @@ export type ConfigState = {
     };
     accessPermission: boolean;
     styledMode: 'light' | 'dark';
+   
 };
 
 const initialState: ConfigState = {

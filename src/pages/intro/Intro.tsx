@@ -10,12 +10,9 @@ const BoxIntro = styled(Box)(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-
-    '& .flex-row': {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+    backgroundColor: 'black',
+    color: '#0079c6',
+    textShadow: `1px 1px 2px #fff`,
 }));
 
 export default function Intro() {
@@ -24,17 +21,17 @@ export default function Intro() {
     useEffect(() => {
         setTimeout(() => {
             navigate('/login');
-        }, 2000);
-    }, [navigate]);
+        }, 4000);
+    }, []);
 
     return (
         <BoxIntro>
-            <Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant="h1" sx={{ marginRight: 4 }}>
                     TASK
                 </Typography>
 
-                <CircularProgress color="success" />
+                <CircularProgress color="secondary" />
 
                 <Typography variant="h1" sx={{ marginLeft: 4 }}>
                     LIST

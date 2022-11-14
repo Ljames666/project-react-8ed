@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Login = React.lazy(() => import('./Login'));
+import Login from './Login';
 
 const LoginConfig = {
     route: {

@@ -1,6 +1,10 @@
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { StateApp } from '../../store/rootReducer';
+import { setUserLogon, User } from '../../store/userSlice';
 
 const Boxlogin = styled(Box)(() => ({
     display: 'flex',
@@ -42,6 +46,37 @@ const Boxlogin = styled(Box)(() => ({
     },
 }));
 export default function Login() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { userList } = useSelector((state: StateApp) => state.user);
+
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+
+    const handleClick = () => {
+        if (!username || !password) {
+            console.log('sem dados');
+
+            return;
+        }
+        const searchUser = userList.find(
+            (user) => user.username === username && user.password === password
+        );
+        if (!searchUser) {
+            setUsername('');
+            setPassword('');
+            console.log('não existe usuario');
+
+            return;
+        }
+        const activeUser: Partial<User> = {
+            id: searchUser.id,
+            username: searchUser.username,
+        };
+        dispatch(setUserLogon(activeUser));
+        navigate('/home');
+    };
+
     return (
         <>
             <Boxlogin>
@@ -85,7 +120,9 @@ export default function Login() {
                             variant="standard"
                             color="info"
                             focused
+                            value={username}
                             sx={{ marginTop: 2 }}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                         <TextField
                             fullWidth
@@ -93,9 +130,16 @@ export default function Login() {
                             variant="standard"
                             color="info"
                             focused
+                            value={password}
                             sx={{ marginTop: 2 }}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
-                        <Button color="info" variant="outlined" sx={{ margin: 2 }}>
+                        <Button
+                            onClick={handleClick}
+                            color="info"
+                            variant="outlined"
+                            sx={{ margin: 2 }}
+                        >
                             Sing In
                         </Button>
                         <Typography>Don't have an account?</Typography>

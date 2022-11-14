@@ -1,6 +1,9 @@
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { setuser } from '../../store/userSlice';
 
 const Boxlogin = styled(Box)(() => ({
     display: 'flex',
@@ -43,6 +46,28 @@ const Boxlogin = styled(Box)(() => ({
 }));
 
 export default function Cadastro() {
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+        const user = {
+            id: '31887742-2479-4097-a625-5eb3370337jk',
+            username: 'Gaby',
+            password: 'admin',
+            name: 'Gabriel',
+            email: 'admin@admin.com',
+            address: 'Logo ali',
+            city: 'Santa Maris',
+            state: 'RS',
+            country: 'Brasil',
+            occupation: 'Software Engineer',
+            role: 'admin',
+            active: true,
+            createdDate: new Date(),
+            updateDate: new Date(),
+        };
+        dispatch(setuser(user));
+    };
+
     return (
         <>
             <Boxlogin>
@@ -128,11 +153,16 @@ export default function Cadastro() {
                             sx={{ marginTop: 2 }}
                         />
 
-                        <Button color="info" variant="outlined" sx={{ margin: 2 }}>
+                        <Button
+                            onClick={handleClick}
+                            color="info"
+                            variant="outlined"
+                            sx={{ margin: 2 }}
+                        >
                             Sing In
                         </Button>
                         <Typography>Don't have an account?</Typography>
-                        <Link to="/home">Come back</Link>
+                        <Link to="/login">Come back</Link>
                     </Box>
                 </Box>
             </Boxlogin>
