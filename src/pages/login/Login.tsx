@@ -116,7 +116,7 @@ export default function Login() {
                         </Typography>
                         <TextField
                             fullWidth
-                            label="username"
+                            label="email"
                             variant="standard"
                             color="info"
                             focused

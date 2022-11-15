@@ -9,7 +9,6 @@ export type ConfigState = {
     };
     accessPermission: boolean;
     styledMode: 'light' | 'dark';
-   
 };
 
 const initialState: ConfigState = {
@@ -32,9 +31,12 @@ const configSlice = createSlice({
         setLoading: (state, action) => {
             state.loading = action.payload;
         },
+        setMessage: (state, action) => {
+            state.message = action.payload;
+        },
     },
     extraReducers: {},
 });
 
-export const { clearState, setLoading } = configSlice.actions;
+export const { clearState, setLoading, setMessage } = configSlice.actions;
 export default configSlice.reducer;

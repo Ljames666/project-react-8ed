@@ -1,12 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { doPost } from '../service/apiService';
+import { setMessage } from './configSlice';
 
 export type User = {
-    id: string;
+    id?: string;
     username: string;
     password: string;
     email: string;
-    createdDate: Date;
-    updateDate: Date;
+    createdDate?: Date;
+    updateDate?: Date;
 };
 
 export type UserState = {
@@ -30,6 +32,28 @@ const initialState: UserState = {
     userLogon: null,
 };
 
+export const postCadastro = createAsyncThunk(
+    'cadastro/post',
+    async ({ username, password, email }: User, { dispatch }) => {
+        const response = await doPost('cadastro', { username, password, email });
+        console.log('cadastro', response);
+
+        dispatch(setMessage(response));
+
+        return response;
+    }
+);
+
+export const postLogin = createAsyncThunk(
+    'login/post',
+    async ({ email, password }: Partial<User>, { dispatch }) => {
+        const response = await doPost('login', { email, password });
+        console.log('cadastro', response);
+
+        return response;
+    }
+);
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -46,7 +70,12 @@ const userSlice = createSlice({
             state.userLogon = action.payload;
         },
     },
-    extraReducers: {},
+    extraReducers: {
+        // @ts-ignore
+        [postLogin.fulfilled]: (state, action) => {
+            state.userLogon = action.payload;
+        },
+    },
 });
 
 export const { clearState, setuser, setUserLogon } = userSlice.actions;
