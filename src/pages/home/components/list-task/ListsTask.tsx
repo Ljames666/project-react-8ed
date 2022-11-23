@@ -54,41 +54,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 function ListTask(props: Props) {
     const dispatch = useDispatch();
     const [rows, setRows] = useState<Array<Rowsprops>>([]);
-    const columns = [
-        {
-            field: 'index',
-            headerName: 'Nº',
-            width: 50,
-        },
-        {
-            field: 'title',
-            headerName: 'Title',
-            width: 50,
-        },
-        {
-            field: 'description',
-            headerName: 'Description',
-        },
-        {
-            field: 'date',
-            headerName: 'Date',
-        },
-        {
-            field: 'actions',
-            headerName: 'Actions',
-            renderCell: (params: GridRenderCellParams) => (
-                <Box>
-                    <IconButton onClick={() => handleUpdate(params.row.key)}>
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(params.row.key)}>
-                        <DeleteForeverIcon />
-                    </IconButton>
-                </Box>
-            ),
-        },
-    ];
-
+    
     useEffect(() => {
         if (props.data.length) {
             const rowsFormat = props.data.map((item, id) => {
