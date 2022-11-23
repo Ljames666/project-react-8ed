@@ -32,27 +32,29 @@ const initialState: UserState = {
     userLogon: null,
 };
 
-export const postCadastro = createAsyncThunk(
-    'cadastro/post',
-    async ({ username, password, email }: User, { dispatch }) => {
-        const response = await doPost('cadastro', { username, password, email });
-        console.log('cadastro', response);
+// TODO: os thunks são para chamadas assincronas do backend não será utilizado por enquanto
 
-        dispatch(setMessage(response));
+// export const postCadastro = createAsyncThunk(
+//     'cadastro/post',
+//     async ({ username, password, email }: User, { dispatch }) => {
+//         const response = await doPost('cadastro', { username, password, email });
+//         console.log('cadastro', response);
 
-        return response;
-    }
-);
+//         dispatch(setMessage(response));
 
-export const postLogin = createAsyncThunk(
-    'login/post',
-    async ({ email, password }: Partial<User>, { dispatch }) => {
-        const response = await doPost('login', { email, password });
-        console.log('cadastro', response);
+//         return response;
+//     }
+// );
 
-        return response;
-    }
-);
+// export const postLogin = createAsyncThunk(
+//     'login/post',
+//     async ({ email, password }: Partial<User>, { dispatch }) => {
+//         const response = await doPost('login', { email, password });
+//         console.log('cadastro', response);
+
+//         return response;
+//     }
+// );
 
 const userSlice = createSlice({
     name: 'user',
@@ -72,9 +74,9 @@ const userSlice = createSlice({
     },
     extraReducers: {
         // @ts-ignore
-        [postLogin.fulfilled]: (state, action) => {
-            state.userLogon = action.payload;
-        },
+        // [postLogin.fulfilled]: (state, action) => {
+        //     state.userLogon = action.payload;
+        // },
     },
 });
 

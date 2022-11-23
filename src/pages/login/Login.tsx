@@ -116,10 +116,11 @@ export default function Login() {
                         </Typography>
                         <TextField
                             fullWidth
-                            label="email"
+                            label="username"
                             variant="standard"
                             color="info"
                             focused
+                            type="text"
                             value={username}
                             sx={{ marginTop: 2 }}
                             onChange={(e) => setUsername(e.target.value)}
@@ -131,6 +132,7 @@ export default function Login() {
                             color="info"
                             focused
                             value={password}
+                            type="password"
                             sx={{ marginTop: 2 }}
                             onChange={(e) => setPassword(e.target.value)}
                         />

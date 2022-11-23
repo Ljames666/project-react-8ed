@@ -5,9 +5,10 @@ import { StateApp } from '../../store/rootReducer';
 
 import ModalInput from './components/modal-input-task/ModalInputTask';
 import ListTask from './components/list-task/ListsTask';
-import { setShowModal } from '../../store/tasksSlice';
+import { setShowModal, Task } from '../../store/tasksSlice';
 import { setUserLogon } from '../../store/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const MyHome = styled(Box)(({ theme }) => ({
     width: '100vw',
@@ -23,6 +24,17 @@ function Home(): JSX.Element {
     const navigate = useNavigate();
     const { userLogon } = useSelector((state: StateApp) => state.user);
     const { showModal, taskList } = useSelector((state: StateApp) => state.task);
+
+    const [tasks, setTasks] = useState<Task[]>([]);
+
+    useEffect(() => {
+        if (taskList.length) {
+            const myTasks = taskList.filter((i) => i.uid === userLogon?.id);
+            if (myTasks.length) {
+                setTasks(myTasks);
+            }
+        }
+    }, [taskList]);
 
     const handleClick = () => dispatch(setShowModal({ open: true, type: 'New Task' }));
     const handleExit = () => {
@@ -56,7 +68,7 @@ function Home(): JSX.Element {
                     }}
                 >
                     {taskList.length ? (
-                        <ListTask data={taskList} />
+                        <ListTask data={tasks} />
                     ) : (
                         <Typography variant="h4">Create your first task</Typography>
                     )}

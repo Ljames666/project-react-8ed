@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { StateApp } from '../../../../store/rootReducer';
 import { addTask, setShowModal, setTaskList, Task } from '../../../../store/tasksSlice';
-import { deleteTaskById } from '../../utils/appUtils';
+import { deleteTaskById, findTaskById } from '../../utils/appUtils';
 type Props = {
     open: boolean;
 };
@@ -17,10 +17,17 @@ function ModalInput({ open }: Props) {
 
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
+    const [editTitle, setEditTitle] = useState<string>('');
+    const [editDescription, setEditDescription] = useState<string>('');
     const [task, setTask] = useState<string>('');
 
     useEffect(() => {
-        if (showModal.id) setTask(showModal.id);
+        if (showModal.id) {
+            setTask(showModal.id);
+            const index = findTaskById(showModal.id, taskList);
+            setEditTitle(index.title);
+            setEditDescription(index.description);
+        }
     }, [showModal]);
 
     const handleClose = () => dispatch(setShowModal({ open: false, type: '' }));
@@ -40,13 +47,6 @@ function ModalInput({ open }: Props) {
 
     const handleUpdate = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         console.log('e----', e);
-        const newTitle =
-            e.target.offsetParent.childNodes[2].childNodes[0].childNodes[1].childNodes[1]
-                .childNodes[0];
-
-        const newDescription =
-            e.target.offsetParent.childNodes[2].childNodes[0].childNodes[2].childNodes[1]
-                .childNodes[0];
 
         const arraytemp = taskList.map((i) => i);
         const index = taskList.findIndex((i) => i.id === task);
@@ -57,8 +57,8 @@ function ModalInput({ open }: Props) {
         }
         const edit = {
             id: arraytemp[index].id,
-            title: newTitle.value,
-            description: newDescription.value,
+            title: editTitle ? editTitle : arraytemp[index].title,
+            description: editDescription ? editDescription : arraytemp[index].description,
             date: new Date(),
             uid: arraytemp[index].uid,
         };
@@ -183,9 +183,10 @@ function ModalInput({ open }: Props) {
                                 variant="standard"
                                 color="info"
                                 focused
-                                value={title}
+                                value={editTitle}
                                 sx={{ marginTop: 2 }}
-                                onChange={(e) => setTitle(e.target.value)}
+                                onChange={(e) => setEditTitle(e.target.value)}
+                                onClick={() => setEditTitle('')}
                             />
 
                             <TextField
@@ -194,9 +195,10 @@ function ModalInput({ open }: Props) {
                                 variant="standard"
                                 color="info"
                                 focused
-                                value={description}
+                                value={editDescription}
                                 sx={{ marginTop: 2 }}
-                                onChange={(e) => setDescription(e.target.value)}
+                                onChange={(e) => setEditDescription(e.target.value)}
+                                onClick={() => setEditDescription('')}
                             />
 
                             <Box

@@ -1,9 +1,10 @@
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { setuser } from '../../store/userSlice';
+import { v4 } from 'uuid';
 
 const Boxlogin = styled(Box)(() => ({
     display: 'flex',
@@ -47,25 +48,33 @@ const Boxlogin = styled(Box)(() => ({
 
 export default function Cadastro() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [rPassword, setRPassword] = useState('');
 
     const handleClick = () => {
+        if (!username || !name || !email || !password) {
+            throw new Error('sem dados');
+        }
+        if (password !== rPassword) {
+            throw new Error('senhas não conferem');
+        }
         const user = {
-            id: '31887742-2479-4097-a625-5eb3370337jk',
-            username: 'Gaby',
-            password: 'admin',
-            name: 'Gabriel',
-            email: 'admin@admin.com',
-            address: 'Logo ali',
-            city: 'Santa Maris',
-            state: 'RS',
-            country: 'Brasil',
-            occupation: 'Software Engineer',
-            role: 'admin',
-            active: true,
+            id: v4(),
+            username,
+            password,
+            name,
+            email,
             createdDate: new Date(),
             updateDate: new Date(),
         };
         dispatch(setuser(user));
+        setTimeout(() => {
+            navigate('/');
+        }, 1000);
     };
 
     return (
@@ -113,7 +122,10 @@ export default function Cadastro() {
                             color="info"
                             size="small"
                             focused
+                            type="text"
                             sx={{ marginTop: 2 }}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
 
                         <TextField
@@ -123,7 +135,10 @@ export default function Cadastro() {
                             color="info"
                             size="small"
                             focused
+                            type="text"
                             sx={{ marginTop: 2 }}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                         />
                         <TextField
                             fullWidth
@@ -132,7 +147,10 @@ export default function Cadastro() {
                             color="info"
                             size="small"
                             focused
+                            type="email"
                             sx={{ marginTop: 2 }}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField
                             fullWidth
@@ -141,7 +159,10 @@ export default function Cadastro() {
                             color="info"
                             size="small"
                             focused
+                            type="password"
                             sx={{ marginTop: 2 }}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <TextField
                             fullWidth
@@ -150,7 +171,10 @@ export default function Cadastro() {
                             color="info"
                             size="small"
                             focused
+                            type="password"
                             sx={{ marginTop: 2 }}
+                            value={rPassword}
+                            onChange={(e) => setRPassword(e.target.value)}
                         />
 
                         <Button
@@ -159,7 +183,7 @@ export default function Cadastro() {
                             variant="outlined"
                             sx={{ margin: 2 }}
                         >
-                            Sing In
+                            Send
                         </Button>
                         <Typography>Don't have an account?</Typography>
                         <Link to="/login">Come back</Link>
